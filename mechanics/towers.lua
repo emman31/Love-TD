@@ -10,13 +10,13 @@ function loadTowers(towers)
 end
 
 --[[
-Dessiner les tours.
-On conserve les coordonnées :
-Towers[i].menuX = Position en X au menu en bas
-Towers[i].menuY = Position en Y
+Draw towers.
+We keep coordinates :
+Towers[i].menuX = X coordinate of down menu
+Towers[i].menuY = Y coordinate of down menu
 --]]
 function drawTowers()
-   -- Calculer la position des tours (dans le menu), si ce n'est pas déjà fait.
+   -- Calculates tours' position (in menu), if not already done.
    if not CalculatedTowersPosition then
       for i=1, #Towers do
          towerHeight = Towers[i].image:getHeight()
@@ -29,12 +29,12 @@ function drawTowers()
       CalculatedTowersPosition = true
    end
 
-   -- Affichage des tours (dans le menu)
+   -- Show towers (in menu)
    for i=1, #Towers do
       love.graphics.draw(Towers[i].image, Towers[i].menuX, Towers[i].menuY)
    end
    
-   -- Si le curseur est sur l'élément de menu d'une tour, on afficher ses détails.
+   -- Show information tooltip on menu item hover
    tower = getTower(love.mouse.getX(), love.mouse.getY())
    if tower ~= nil then
       drawTowerDetails(tower, love.mouse.getX(), love.mouse.getY())
@@ -43,7 +43,7 @@ function drawTowers()
 end
 
 --[[
-Obtenir les details de la tour dont l'élément dans le menu se trouve aux coordonnées reçues.
+Get information about the tower menu item found at given coordinates.
 --]]
 function getTower(x, y)
    for i=1, #Towers do
@@ -58,7 +58,7 @@ function drawTowerDetails(tower, mouseX, mouseY)
    tooltipPadding = 10
    textTopMargin = 2
 
-   -- La largeur du tooltip est déterminé par la longueur du nom de la tour. (Minimum 100 pixels)
+   -- Tooltip width is determined by the tour name's width. (min 100 px)
    rectWidth = TooltipFont:getWidth(tower.name) + tooltipPadding*2
    if rectWidth < 100 then
       rectWidth = 100 
@@ -77,15 +77,15 @@ function drawTowerDetails(tower, mouseX, mouseY)
 
    fontHeight = TooltipFont:getHeight()
 
-   -- Préparation du font.
+   -- Prepare font.
    love.graphics.setFont(TooltipFont)
    love.graphics.setColorMode("modulate")
    love.graphics.setColor(0, 0, 255)
 
-   -- Afficher le nom de la tour.
+   -- Show tower name.
    love.graphics.printf(tower.name, rectX, rectY + tooltipPadding, rectWidth, "center")
 
-   -- Afficher les autre détails.
+   -- Show other details.
    detailsStart = rectY + tooltipPadding*2 + fontHeight
    love.graphics.print("Fire Rate: " .. tower.fireRate, rectX + tooltipPadding, detailsStart)
    love.graphics.print("Damage: " .. tower.damage, rectX + tooltipPadding, detailsStart + textTopMargin + fontHeight)
